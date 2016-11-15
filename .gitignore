@@ -1,0 +1,6 @@
+dist
+node_modules
+*.zip
+yarn.lock
+.idea
+*.iml

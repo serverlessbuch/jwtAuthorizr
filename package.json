@@ -1,0 +1,27 @@
+{
+  "name": "jwtAuthorizr",
+  "version": "1.0.0",
+  "description": "Custom Authorizer Lambda function for API Gateway with Bearer JWT",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/gulp build",
+    "cfn:create": "aws cloudformation create-stack --stack-name jwtAuthorizr --capabilities CAPABILITY_NAMED_IAM --template-body file://./resources.cfn.yml",
+    "cfn:update": "aws cloudformation update-stack --stack-name jwtAuthorizr --capabilities CAPABILITY_NAMED_IAM --template-body file://./resources.cfn.yml",
+    "deploy": "npm run build && npm run upload && npm run update",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "upload": "aws s3 cp ./dist.zip s3://dasniko/lambda/jwtAuthorizr.zip"
+  },
+  "author": "Niko Köbler, http://www.n-k.de, @dasniko",
+  "license": "MIT",
+  "dependencies": {
+    "jsonwebtoken": "^7.1.9"
+  },
+  "devDependencies": {
+    "del": "^2.2.0",
+    "gulp": "^3.9.0",
+    "gulp-install": "^0.6.0",
+    "gulp-zip": "^3.0.2",
+    "run-sequence": "^1.1.5"
+  },
+  "repository": "https://github.com/dasniko/jwtAuthorizr"
+}

@@ -1,0 +1,4 @@
+{
+  "audience": "demo",
+  "issuer": "http://localhost:8080/auth/realms/demo"
+}
