@@ -2,26 +2,30 @@ const jwt = require('jsonwebtoken');
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-console.log('Loading function');
+console.log('Loading jwtAuthorizer');
 
 exports.handler = function(event, context) {
-  console.log('Event', JSON.stringify(event, null, 2));
-  //console.log('Context', JSON.stringify(context, null, 2));
+  console.log('Received event', JSON.stringify(event, null, 2));
 
   // remove the 'Bearer ' prefix from the auth token
   const token = event.authorizationToken.replace(/Bearer /g, '');
 
+  // parse all API options from the event, we need some of them
   const apiOptions = getApiOptions(event);
 
+  // s3 info where to find the config and key files
+  // they should have the stage name in filepath to determine the correct context values
   const bucketName = 'jwtsso';
   const filePathConfig = 'jwtConfig_' + apiOptions.stageName + '.json';
   const filePathPublicKey = 'jwtPublicKey_' + apiOptions.stageName + '.txt';
+  // first, get the config file and content
   s3.getObject({Bucket: bucketName, Key: filePathConfig}, (err, configData) => {
     if (err) {
       console.log('S3 CONFIG ERROR', err, err.stack);
       context.succeed(denyPolicy('anonymous', event.methodArn));
     } else {
       const config = configData.Body.toString();
+      // now, get the public key/cert file and content
       s3.getObject({Bucket: bucketName, Key: filePathPublicKey}, (e, publicKeyData) => {
         if (e) {
           console.log('S3 PUBLICKEY ERROR', e, e.stack);
@@ -29,6 +33,7 @@ exports.handler = function(event, context) {
         } else {
           const publicKey = publicKeyData.Body.toString();
 
+          // verify the token with loaded publicKey and config and return proper AWS policy document
           try {
             const verified = jwt.verify(token, publicKey, config);
             context.succeed(allowPolicy(verified.sub, event.methodArn));
