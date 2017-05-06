@@ -1,6 +1,5 @@
-dist
 node_modules
-*.zip
-yarn.lock
 .idea
 *.iml
+.serverless
+sls-props.yml
