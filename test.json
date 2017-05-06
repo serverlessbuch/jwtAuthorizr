@@ -1,0 +1,5 @@
+{
+  "type": "TOKEN",
+  "authorizationToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik5pa28gS8O2YmxlciIsImFkbWluIjp0cnVlLCJpc3MiOiJkYXNuaWtvIiwiYXVkIjoiZGVtbyJ9.V7vQT0N6Py-n9mjRgt-QwWMsTSvFkTRRU0D5t1lrS08",
+  "methodArn": "arn:aws:execute-api:aws-region:aws-user-id:api-gateway-id/null/GET/"
+}
