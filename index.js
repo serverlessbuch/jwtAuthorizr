@@ -22,7 +22,7 @@ exports.handler = function(event, context, callback) {
   // verify the token with publicKey and config and return proper AWS policy document
   jwt.verify(token, secret, config, (err, verified) => {
     if (err) {
-      console.error('JWT Error', e, e.stack);
+      console.error('JWT Error', err, err.stack);
       callback(null, denyPolicy('anonymous', event.methodArn));
     } else {
       callback(null, allowPolicy(verified.sub, event.methodArn));
